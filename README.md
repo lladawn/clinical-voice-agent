@@ -17,6 +17,30 @@ the artifact MLR / regulatory reviewers actually need.
 > *UI preview illustrating the two-panel layout and the four demo scenarios.
 > Swap in a real screenshot of a live call when demoing.*
 
+## Highlights — the interesting engineering
+
+Beyond the working voice pipeline, this digs into four hard problems in clinical
+voice AI, each designed, built, and **measured** (full write-ups in [docs/](docs/)):
+
+- **Recall-first safety detection** — layered emergency/off-label detection tuned
+  so a missed emergency (catastrophic) beats an over-escalation (cheap). Regex
+  paraphrase matching + an optional semantic classifier. Adversarial eval:
+  emergency recall **80% → 100%**, zero false escalations. → [docs/safety-detection.md](docs/safety-detection.md)
+- **Latency budget + concurrent guardrail** — every turn is instrumented per
+  stage (p50/p95). Measuring revealed the safety classifier (~1.4s) should run
+  *concurrently* with the LLM, gated at the first token — felt latency becomes
+  `max(classify, first_token)` instead of the sum, with no safety loss. → [docs/latency.md](docs/latency.md)
+- **True groundedness** — span-level RAG with citations, forced abstention when
+  the label doesn't cover a question, and an LLM-judge faithfulness auditor that
+  catches hallucination-via-false-citation. → [docs/groundedness.md](docs/groundedness.md)
+- **Tamper-evident audit** — per-turn records are hash-chained (SHA-256, per-session
+  sequence), so any edit, deletion, or reorder is detectable — the integrity an
+  MLR reviewer needs. → [docs/audit.md](docs/audit.md)
+
+A **six-part eval harness** (`make eval`) covers safety recall, behavioral
+compliance, numeric + judged groundedness, latency, and audit integrity — several
+are deterministic and CI-gateable.
+
 ## What it demonstrates
 
 1. **Real-time voice pipeline** — LiveKit Agents + Deepgram Nova-3 Medical (STT)
