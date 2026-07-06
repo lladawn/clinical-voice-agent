@@ -63,15 +63,6 @@ straight about what that means:
   or load testing. The audit chain proves *integrity, not authenticity* (see
   [docs/audit.md](docs/audit.md) for what external anchoring would add).
 
-## What it demonstrates
-
-1. **Real-time voice pipeline** — LiveKit Agents + Deepgram Nova-3 Medical (STT)
-   + Claude (`claude-sonnet-4-6`) + Cartesia (TTS).
-2. **Compliance guardrails** — a fast pre-LLM keyword check (emergencies /
-   off-label / out-of-scope) plus the LLM tagging its own output.
-3. **Structured per-turn audit logging** to Supabase (Postgres).
-4. **RAG** over a mock prescribing-information document (keyword/TF-IDF, no vector DB).
-
 ## Architecture
 
 ```
@@ -94,13 +85,15 @@ Next.js frontend (frontend/): live transcript (left) + audit feed (right)
 ## Layout
 
 ```
-agent/        LiveKit agent: main, pipeline, guardrails, rag, audit, prompts + Dockerfile
-backend/      FastAPI: LiveKit token + audit-log API + Dockerfile
-frontend/     Next.js UI: transcript + audit panels + Dockerfile
-data/         mock_pi.txt (prescribing info) + schema.sql (Supabase)
-evals/        behavioral + STT accuracy eval harness
+agent/        LiveKit agent: pipeline, guardrails, semantic_guardrail, rag,
+              prompts, latency, audit, main
+backend/      FastAPI: LiveKit token + audit-log API (Python/on-prem alt)
+frontend/     Next.js UI + API routes (transcript + audit panels)
+data/         mock_pi.txt (prescribing info) + schema.sql
+evals/        six-part eval harness (safety, behavioral, groundedness,
+              faithfulness, latency, audit integrity)
+docs/         design write-ups per hard problem
 supabase/     CLI migrations
-docker-compose.yml   full stack (agent + backend + frontend)
 Makefile      task shortcuts (make help)
 ```
 
@@ -285,8 +278,8 @@ auditor catches.
 
 ## Evals
 
-> **Design docs:** [docs/](docs/) covers each hard problem (safety detection,
-> latency, groundedness) with the problem, design, tradeoffs, and measurements —
+> **Design docs:** [docs/](docs/) covers each hard problem (safety, latency,
+> groundedness, audit) with the problem, design, tradeoffs, and measurements —
 > plus a [roadmap](docs/roadmap.md).
 
 Task-specific evals — what matters for a clinical agent, not MMLU:
@@ -332,36 +325,16 @@ Running 5 groundedness checks (numeric claims vs PI)...
 Groundedness score: 5/5 (100.0%)
 ```
 
-## Docker / on-prem
-
-The whole stack runs containerized:
-
-```bash
-make up        # docker compose up --build  (agent + backend + frontend)
-make down
-```
-
-Supabase stays hosted for the demo. For a hospital VPC you'd point `LIVEKIT_URL`
-at a self-hosted LiveKit server (open source) and `SUPABASE_*` at a self-hosted
-Postgres — nothing else changes. The agent container has no external dependencies
-beyond the `.env` vars.
-
-## Design notes / talking points
+## Notes
 
 - **`utterance_end_ms` tradeoff** — a longer silence window before finalizing a
   turn avoids cutting off slow or anxious patients, at the cost of latency.
 - **Compliance tag is stripped before TTS but kept in the audit log** —
   separates user-facing UX from the regulatory record.
-- **Layered, recall-first safety detection** — see the section above. Regex
-  (zero-latency) → optional semantic classifier (vague/indirect tail) → LLM.
-  Emergencies bias toward over-escalation by design.
 - **Audit writes are async / best-effort** — logging never blocks the voice path,
   and falls back to stdout if Supabase isn't configured.
-- **Production swaps** — replace the keyword RAG with pgvector + Supabase
-  embeddings (same `PIRetriever.retrieve` interface); add speaker diarization for
-  multi-party calls; push session summaries to a CRM.
-
-> **Note:** The LiveKit Agents SDK evolves quickly. `agent/pipeline.py` targets
-> the v1.x API (`AgentSession`, `Agent` hooks). If a method signature has shifted
-> in your installed version, the hook names to look for are `on_user_turn_completed`
-> and `llm_node`.
+- **Docker / on-prem** — a `docker-compose.yml` runs the full stack (`make up`);
+  for a VPC, point `LIVEKIT_URL` / `SUPABASE_*` at self-hosted equivalents. The
+  containerized path is present but the demo is deployed via Vercel (above).
+- **LiveKit SDK note** — `agent/pipeline.py` targets the v1.x API; the hooks to
+  look for if a signature shifts are `on_user_turn_completed` and `llm_node`.
