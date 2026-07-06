@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1040" height="640" viewBox="0 0 1040 640" font-family="-apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif">
+  <rect width="1040" height="640" fill="#f8fafc"/>
+
+  <!-- Header -->
+  <text x="32" y="46" font-size="24" font-weight="700" fill="#0f172a">Aria — Veralix Patient Support</text>
+  <text x="32" y="68" font-size="13" fill="#64748b">Clinical voice agent · compliance guardrails · audit logging</text>
+  <rect x="760" y="30" width="160" height="34" rx="8" fill="#d1fae5"/>
+  <text x="775" y="52" font-size="13" font-weight="500" fill="#065f46">Connected · veralix-8f2a</text>
+  <rect x="930" y="30" width="80" height="34" rx="8" fill="#dc2626"/>
+  <text x="947" y="52" font-size="13" font-weight="600" fill="#ffffff">End call</text>
+
+  <!-- ===== Left: Live Transcript ===== -->
+  <text x="32" y="108" font-size="12" font-weight="600" letter-spacing="0.05em" fill="#64748b">LIVE TRANSCRIPT</text>
+  <rect x="32" y="120" width="480" height="490" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+
+  <text x="52" y="150" font-size="13"><tspan font-weight="600" fill="#334155">Aria: </tspan><tspan fill="#0f172a">Hi, this is Aria, your Veralix support assistant.</tspan></text>
+  <text x="52" y="182" font-size="13"><tspan font-weight="600" fill="#334155">Patient: </tspan><tspan fill="#0f172a">What's the usual dose for Veralix?</tspan></text>
+  <text x="52" y="206" font-size="13"><tspan font-weight="600" fill="#047857">Aria: </tspan><tspan fill="#0f172a">The usual dose is 150 mg by injection every</tspan></text>
+  <text x="86" y="224" font-size="13" fill="#0f172a">2 weeks. Rotate your injection sites.</text>
+
+  <text x="52" y="256" font-size="13"><tspan font-weight="600" fill="#334155">Patient: </tspan><tspan fill="#0f172a">Can I use this for my arthritis?</tspan></text>
+  <text x="52" y="280" font-size="13"><tspan font-weight="600" fill="#047857">Aria: </tspan><tspan fill="#0f172a">That's outside what I'm able to help with.</tspan></text>
+  <text x="86" y="298" font-size="13" fill="#0f172a">Please speak with your doctor.</text>
+
+  <text x="52" y="330" font-size="13"><tspan font-weight="600" fill="#334155">Patient: </tspan><tspan fill="#0f172a">I'm having chest pain right now</tspan></text>
+  <text x="52" y="354" font-size="13"><tspan font-weight="600" fill="#047857">Aria: </tspan><tspan fill="#0f172a">Please call 911 or go to your nearest</tspan></text>
+  <text x="86" y="372" font-size="13" fill="#0f172a">emergency room right away.</text>
+
+  <text x="52" y="404" font-size="13"><tspan font-weight="600" fill="#334155">Patient: </tspan><tspan fill="#94a3b8">tell me about ibuprofen</tspan><tspan fill="#94a3b8" font-style="italic"> (interim…)</tspan></text>
+
+  <!-- ===== Right: Audit Log ===== -->
+  <text x="536" y="108" font-size="12" font-weight="600" letter-spacing="0.05em" fill="#64748b">AUDIT LOG</text>
+  <rect x="536" y="120" width="472" height="490" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+
+  <!-- record 1: ON_LABEL -->
+  <rect x="556" y="140" width="432" height="96" rx="6" fill="#f8fafc" stroke="#f1f5f9"/>
+  <rect x="570" y="152" width="78" height="20" rx="4" fill="#d1fae5"/>
+  <text x="580" y="166" font-size="11" font-weight="600" fill="#065f46">ON_LABEL</text>
+  <text x="958" y="166" font-size="11" fill="#94a3b8" text-anchor="end">612 ms</text>
+  <text x="570" y="192" font-size="12"><tspan font-weight="600" fill="#334155">Patient:</tspan><tspan fill="#334155"> What's the usual dose for Veralix?</tspan></text>
+  <text x="570" y="210" font-size="12"><tspan font-weight="600" fill="#334155">Aria:</tspan><tspan fill="#334155"> The usual dose is 150 mg every 2 weeks…</tspan></text>
+  <text x="570" y="228" font-size="11" fill="#64748b">guardrail: PASS · PI: Dosage And Administration · cites S4</text>
+
+  <!-- record 2: OFF_LABEL_REFUSED (amber) -->
+  <rect x="556" y="248" width="432" height="80" rx="6" fill="#f8fafc" stroke="#f1f5f9"/>
+  <rect x="570" y="260" width="140" height="20" rx="4" fill="#fef3c7"/>
+  <text x="580" y="274" font-size="11" font-weight="600" fill="#92400e">OFF_LABEL_REFUSED</text>
+  <text x="958" y="274" font-size="11" fill="#94a3b8" text-anchor="end">8 ms</text>
+  <text x="570" y="300" font-size="12"><tspan font-weight="600" fill="#334155">Patient:</tspan><tspan fill="#334155"> Can I use this for my arthritis?</tspan></text>
+  <text x="570" y="318" font-size="11" fill="#64748b">guardrail: BLOCK · canned compliant response</text>
+
+  <!-- record 3: EMERGENCY_ESCALATED (red) -->
+  <rect x="556" y="340" width="432" height="80" rx="6" fill="#f8fafc" stroke="#f1f5f9"/>
+  <rect x="570" y="352" width="160" height="20" rx="4" fill="#fee2e2"/>
+  <text x="580" y="366" font-size="11" font-weight="600" fill="#991b1b">EMERGENCY_ESCALATED</text>
+  <text x="958" y="366" font-size="11" fill="#94a3b8" text-anchor="end">6 ms</text>
+  <text x="570" y="392" font-size="12"><tspan font-weight="600" fill="#334155">Patient:</tspan><tspan fill="#334155"> I'm having chest pain right now</tspan></text>
+  <text x="570" y="410" font-size="11" fill="#64748b">guardrail: EMERGENCY · escalated before LLM</text>
+
+  <!-- record 4: OUT_OF_SCOPE (amber) -->
+  <rect x="556" y="432" width="432" height="80" rx="6" fill="#f8fafc" stroke="#f1f5f9"/>
+  <rect x="570" y="444" width="118" height="20" rx="4" fill="#fef3c7"/>
+  <text x="580" y="458" font-size="11" font-weight="600" fill="#92400e">OUT_OF_SCOPE</text>
+  <text x="958" y="458" font-size="11" fill="#94a3b8" text-anchor="end">640 ms</text>
+  <text x="570" y="484" font-size="12"><tspan font-weight="600" fill="#334155">Patient:</tspan><tspan fill="#334155"> Can you tell me about ibuprofen?</tspan></text>
+  <text x="570" y="502" font-size="11" fill="#64748b">guardrail: PASS · different drug — declined</text>
+
+  <text x="556" y="548" font-size="11" fill="#94a3b8">Every turn: utterance · guardrail · retrieved/cited spans · response · tag · latency</text>
+  <text x="556" y="566" font-size="11" fill="#94a3b8">— hash-chained, append-only (tamper-evident).</text>
+</svg>
