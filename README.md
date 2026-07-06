@@ -41,6 +41,28 @@ A **six-part eval harness** (`make eval`) covers safety recall, behavioral
 compliance, numeric + judged groundedness, latency, and audit integrity — several
 are deterministic and CI-gateable.
 
+## Scope & honest caveats
+
+This is a demo built quickly to get hands-on with the stack and think through the
+problems that matter in a clinical setting — not a production system. Being
+straight about what that means:
+
+- **The advanced features are opt-in and validated offline**, not in a live
+  clinical run. The semantic guardrail (`SEMANTIC_GUARDRAIL`), grounded mode
+  (`GROUNDED_MODE`), and the concurrent-guardrail path are off by default; they're
+  exercised by the eval harness and, for the concurrency, a *simulated* LLM stream
+  — not a full end-to-end voice call under load.
+- **RAG is TF-IDF, not embeddings.** Retrieval is keyword/TF-IDF over the mock PI;
+  the `retrieve` / `retrieve_spans` interface is designed so pgvector drops in
+  without touching the rest.
+- **Techniques are standard, deliberately.** Regex + a fast classifier, an
+  LLM-judge, a SHA-256 hash chain — nothing novel. The value here is the *design
+  judgment* (recall-first framing, measure-before-optimize, abstention, audit
+  integrity) and the eval harness, not algorithmic difficulty.
+- **Not production-hardened** — no auth, rate limiting, ret/backpressure tuning,
+  or load testing. The audit chain proves *integrity, not authenticity* (see
+  [docs/audit.md](docs/audit.md) for what external anchoring would add).
+
 ## What it demonstrates
 
 1. **Real-time voice pipeline** — LiveKit Agents + Deepgram Nova-3 Medical (STT)
