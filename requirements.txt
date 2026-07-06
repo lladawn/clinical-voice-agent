@@ -1,0 +1,9 @@
+livekit-agents>=1.0.0
+livekit-plugins-deepgram
+livekit-plugins-anthropic
+livekit-plugins-silero
+livekit-plugins-cartesia
+supabase
+fastapi
+uvicorn[standard]
+python-dotenv

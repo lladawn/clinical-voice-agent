@@ -1,0 +1,8 @@
+# Supabase CLI project config.
+# project_id is a local label; the actual remote project is selected by
+# `supabase link --project-ref <ref>`.
+project_id = "synthio-clinical-voice-agent"
+
+[db]
+# Postgres major version of your Supabase project (Settings -> Database).
+major_version = 15

@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+path/to/venv/
+
+# Node / Next
+node_modules/
+frontend/node_modules/
+frontend/.next/
+
+# Secrets & local
+.env
+.env.local
+.git/
+.DS_Store
+
+# Eval clips (large audio) — not needed in images
+evals/stt_clips/*.wav
