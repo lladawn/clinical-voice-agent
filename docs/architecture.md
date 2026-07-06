@@ -18,8 +18,8 @@ Mic (browser, WebRTC)
 ## Why LiveKit (not Vapi)
 
 Vapi is a hosted voice-agent platform — fast to stand up, but you work *inside*
-its abstraction. Synthio's requirements — compliance hooks at every turn, per-turn
-audit logging, on-prem/VPC deployment, custom guardrail logic — all need
+its abstraction. A clinical setting's requirements — compliance hooks at every
+turn, per-turn audit logging, on-prem/VPC deployment, custom guardrail logic — all need
 pipeline-level control that a hosted abstraction makes hard. LiveKit is a
 real-time media layer with a Python Agents SDK, so the pipeline is *our code*:
 the guardrail, the tag-stripping, the audit write are all things we own.

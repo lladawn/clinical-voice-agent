@@ -23,7 +23,7 @@ from pydantic import BaseModel
 
 load_dotenv()
 
-app = FastAPI(title="Synthio Clinical Voice Agent — Backend")
+app = FastAPI(title="Clinical Voice Agent — Backend")
 
 # Permissive CORS for the local Next.js dev server.
 app.add_middleware(

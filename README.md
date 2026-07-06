@@ -1,4 +1,4 @@
-# Synthio Demo — Clinical Voice Agent (Aria / Veralix)
+# Clinical Voice Agent Demo (Aria / Veralix)
 
 ![Python](https://img.shields.io/badge/Python-3.11-3776AB?logo=python&logoColor=white)
 ![LiveKit](https://img.shields.io/badge/LiveKit-Agents-000000?logo=livekit&logoColor=white)
@@ -7,10 +7,10 @@
 ![Next.js](https://img.shields.io/badge/Next.js-14-000000?logo=nextdotjs&logoColor=white)
 ![Supabase](https://img.shields.io/badge/Supabase-Postgres-3FCF8E?logo=supabase&logoColor=white)
 
-A mini "Ather" clone: a real-time voice agent that answers patient questions
-about a fictional medication (**Veralix**), stays compliant via guardrails, does
-RAG over a mock FDA label, and writes a structured **audit log** of every turn —
-the artifact MLR / regulatory reviewers actually need.
+A real-time clinical voice agent that answers patient questions about a fictional
+medication (**Veralix**), stays compliant via guardrails, does RAG over a mock FDA
+label, and writes a structured **audit log** of every turn — the artifact MLR /
+regulatory reviewers actually need.
 
 ![UI preview — live transcript and per-turn audit log](docs/ui-preview.svg)
 
