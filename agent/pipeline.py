@@ -34,6 +34,7 @@ from pathlib import Path
 from livekit.agents import Agent, AgentSession, ChatContext, ChatMessage, llm
 from livekit.agents.voice import ModelSettings
 from livekit.plugins import anthropic, cartesia, deepgram, silero
+from livekit.plugins.turn_detector.english import EnglishModel
 
 from . import guardrails
 from .audit import AuditLogger, AuditRecord
@@ -284,6 +285,13 @@ def build_session() -> AgentSession:
         ),
         llm=anthropic.LLM(model=LLM_MODEL),
         tts=cartesia.TTS(),
+        # Context-aware end-of-utterance detection: a small on-device model reads
+        # the transcript and predicts whether the patient is actually finished, so
+        # an unfinished sentence ("the dose I take is…") won't trigger a reply even
+        # if they pause. This is the real fix for cut-offs; VAD/endpointing below
+        # are the fallback timers. (Local EnglishModel — deprecated in favour of
+        # the cloud inference.TurnDetector, but kept on-device for self-containment.)
+        turn_detection=EnglishModel(),
         # Extra grace after VAD thinks the patient stopped, before ending the turn.
         min_endpointing_delay=0.6,
         max_endpointing_delay=6.0,   # …but don't wait forever.
