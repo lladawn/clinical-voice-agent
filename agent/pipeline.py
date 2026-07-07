@@ -260,9 +260,22 @@ class ClinicalAgent(Agent):
 
 
 def build_session() -> AgentSession:
-    """Construct the AgentSession with the full STT/LLM/TTS/VAD stack."""
+    """Construct the AgentSession with the full STT/LLM/TTS/VAD stack.
+
+    Turn-taking is tuned so the agent doesn't cut patients off mid-thought. The
+    tradeoff is latency vs. patience: bigger silence/endpointing windows give slow
+    or anxious speakers room to pause, at the cost of a slightly slower reply.
+    """
+    vad = silero.VAD.load(
+        # Wait longer after speech stops before declaring the turn over.
+        # Default 0.55s ends a turn on a brief mid-sentence pause ("the dose is…
+        # um… 150?"); 0.8s lets patients breathe without triggering a response.
+        min_silence_duration=0.8,
+        min_speech_duration=0.05,
+        activation_threshold=0.5,
+    )
     return AgentSession(
-        vad=silero.VAD.load(),
+        vad=vad,
         stt=deepgram.STT(
             model="nova-3-medical",
             language="en-US",
@@ -271,4 +284,10 @@ def build_session() -> AgentSession:
         ),
         llm=anthropic.LLM(model=LLM_MODEL),
         tts=cartesia.TTS(),
+        # Extra grace after VAD thinks the patient stopped, before ending the turn.
+        min_endpointing_delay=0.6,
+        max_endpointing_delay=6.0,   # …but don't wait forever.
+        # Require ~0.5s of actual speech to interrupt Aria — filters out coughs,
+        # background noise, and "mm-hm" backchannel so she isn't cut off either.
+        min_interruption_duration=0.5,
     )
