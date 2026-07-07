@@ -282,6 +282,19 @@ def build_session() -> AgentSession:
             language="en-US",
             interim_results=True,   # stream interims for low latency
             punctuate=True,
+            smart_format=True,      # clean numbers/units ("150 mg", dates)
+            numerals=True,          # "one fifty" -> 150 (dosing accuracy + audit)
+            # Deepgram's own endpointing was 25ms — it finalized a segment on any
+            # micro-pause, splitting one utterance across turns and dropping the
+            # tail words. 300ms keeps a spoken phrase together; the turn detector
+            # decides the actual end of turn.
+            endpointing_ms=300,
+            # Keyterm prompting (Nova-3): boost domain vocabulary so drug/clinical
+            # terms aren't missed or misheard.
+            keyterm=[
+                "Veralix", "veralixumab", "subcutaneous", "injection site",
+                "milligrams", "dose", "prescribing information",
+            ],
         ),
         llm=anthropic.LLM(model=LLM_MODEL),
         tts=cartesia.TTS(),
