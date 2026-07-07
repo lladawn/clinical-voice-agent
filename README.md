@@ -59,9 +59,13 @@ straight about what that means:
   LLM-judge, a SHA-256 hash chain — nothing novel. The value here is the *design
   judgment* (recall-first framing, measure-before-optimize, abstention, audit
   integrity) and the eval harness, not algorithmic difficulty.
-- **Not production-hardened** — no auth, rate limiting, ret/backpressure tuning,
+- **Not production-hardened** — no auth, rate limiting, retry/backpressure tuning,
   or load testing. The audit chain proves *integrity, not authenticity* (see
   [docs/audit.md](docs/audit.md) for what external anchoring would add).
+
+For what the *real* product adds beyond this demo — tenancy isolation, PHI,
+identity, retrieval routing over records, escalation workflows — see
+[docs/product-vision.md](docs/product-vision.md).
 
 ## Architecture
 
