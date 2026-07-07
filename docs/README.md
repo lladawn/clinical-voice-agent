@@ -11,6 +11,7 @@ design, the tradeoffs, and how it's measured.
 | [latency.md](latency.md) | Measuring the latency budget; concurrent guardrail execution |
 | [groundedness.md](groundedness.md) | Making every claim traceable to the label; abstention |
 | [audit.md](audit.md) | Tamper-evident, hash-chained audit records |
+| [product-vision.md](product-vision.md) | Demo → real product: the six gaps, and what "precision" means |
 | [roadmap.md](roadmap.md) | What's done, what's next |
 
 ## Design philosophy
