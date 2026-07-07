@@ -5,6 +5,7 @@ import { NextResponse } from "next/server";
 // with the service key (never exposed to the client).
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
+export const fetchCache = "force-no-store"; // never cache the audit query
 
 export async function GET(req: Request) {
   const { SUPABASE_URL, SUPABASE_SERVICE_KEY } = process.env;
@@ -13,7 +14,13 @@ export async function GET(req: Request) {
   }
 
   const sessionId = new URL(req.url).searchParams.get("session_id");
-  const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY);
+  // Force the underlying fetch to bypass Next's App Router fetch cache — otherwise
+  // the audit feed serves a stale snapshot and never updates.
+  const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY, {
+    global: {
+      fetch: (input, init) => fetch(input, { ...init, cache: "no-store" }),
+    },
+  });
 
   let query = supabase
     .from("audit_log")
