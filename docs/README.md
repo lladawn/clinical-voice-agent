@@ -12,6 +12,7 @@ design, the tradeoffs, and how it's measured.
 | [groundedness.md](groundedness.md) | Making every claim traceable to the label; abstention |
 | [audit.md](audit.md) | Tamper-evident, hash-chained audit records |
 | [product-vision.md](product-vision.md) | Demo → real product: the six gaps, and what "precision" means |
+| [plan-v1.md](plan-v1.md) | v1 "Medication Companion": scoped product plan with milestones |
 | [roadmap.md](roadmap.md) | What's done, what's next |
 
 ## Design philosophy
